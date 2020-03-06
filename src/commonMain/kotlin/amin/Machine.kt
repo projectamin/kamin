@@ -1,0 +1,4 @@
+package amin
+
+class Machine {
+}

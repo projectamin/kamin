@@ -1,0 +1,4 @@
+rootProject.name = 'kamin'
+
+
+enableFeaturePreview('GRADLE_METADATA')
