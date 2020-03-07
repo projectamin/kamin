@@ -43,7 +43,15 @@ actual class Parser actual constructor(val handler: Base) : NSObject(), NSXMLPar
         qualifiedName: String?,
         attributes: Map<Any?, *>
     ) {
-        this.handler.startElement(didStartElement, namespaceURI, qualifiedName, mapOf())
+        this.handler.startElement(didStartElement, namespaceURI, qualifiedName, attributes as Map<String, String>)
+    }
+
+    override fun parser(parser: NSXMLParser, foundCharacters: String) {
+        this.handler.characters(foundCharacters)
+    }
+
+    override fun parser(parser: NSXMLParser, didEndElement: String, namespaceURI: String?, qualifiedName: String?) {
+        this.handler.endElement(didEndElement, namespaceURI, qualifiedName)
     }
 
     override fun parser(parser: NSXMLParser, parseErrorOccurred: NSError) {

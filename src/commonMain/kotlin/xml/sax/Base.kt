@@ -18,9 +18,24 @@ class Base {
         element: String,
         namespaceURI: String?,
         qualifiedName: String?,
-        attributes: Map<String?, String?>) {
+        attributes: Map<String, String>) {
         println("Start Element")
         println(element)
+    }
+
+    fun characters(
+        characters: String
+    ) {
+        println("characters")
+        println(characters)
+    }
+
+    fun endElement(
+        element: String,
+        namespaceURI: String?,
+        qualifiedName: String?
+    ) {
+        println("End Element")
     }
 
     fun endDocument() {
