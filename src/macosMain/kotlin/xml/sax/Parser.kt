@@ -12,9 +12,9 @@ actual class Parser actual constructor(val handler: Base) : NSObject(), NSXMLPar
 
         val bytes = xml.encodeToByteArray()
 
-        // Make sure we pin the parser to prevent is vanishing while parsing is in progress.
+        // Make sure we pin the parser to prevent it vanishing while parsing is in progress.
         this.usePinned { _ ->
-            // Pin bytes to allow data to be available during parsing.
+            // Pin bytes to allow data to remain available during parsing and give us a static ref for interop.
             bytes.usePinned { bytesRef ->
                 val data = NSData.dataWithBytes(bytesRef.addressOf(0), bytes.size.convert())
                 this.parser = NSXMLParser(data = data)
