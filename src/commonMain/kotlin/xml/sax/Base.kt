@@ -14,11 +14,13 @@ class Base {
         println("Start Document")
     }
 
-    fun startElement(namespaceURI: String?,
-                     qualifiedName: String?,
-                     attributes: Map<String?, String?>) {
+    fun startElement(
+        element: String,
+        namespaceURI: String?,
+        qualifiedName: String?,
+        attributes: Map<String?, String?>) {
         println("Start Element")
-        println(qualifiedName)
+        println(element)
     }
 
     fun endDocument() {

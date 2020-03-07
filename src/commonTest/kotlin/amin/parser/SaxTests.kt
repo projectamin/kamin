@@ -15,7 +15,7 @@ class SaxTests {
 
     @Test
     fun parseDoc() {
-        val xml = "<machine xmlns:amin='http://projectamin.org/ns/'></machine>"
+        val xml = "<machine xmlns:amin='http://projectamin.org/ns/'><name>Amin::Machine::Dispatcher</name><filter name='Amin::Chroot'></filter></machine>"
         val handler = Base()
         val parser = Parser(handler)
         parser.parse(xml)

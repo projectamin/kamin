@@ -1,6 +1,6 @@
 package xml.sax
 
-import kotlinx.cinterop.StableRef
+import kotlinx.cinterop.*
 import platform.Foundation.*
 import platform.darwin.NSObject
 
@@ -11,23 +11,28 @@ actual class Parser actual constructor(val handler: Base) : NSObject(), NSXMLPar
     actual fun parse(xml: String) {
 
         val bytes = xml.encodeToByteArray()
-        val pointer = StableRef.create(bytes)
-        val data = NSData.dataWithBytes(pointer.asCPointer(), bytes.size.toULong())
-        this.parser = NSXMLParser(data)
-        this.parser.delegate = this
-        println("Parsing")
-        this.parser.parse()
-        println("Parsing Done")
 
+        // Make sure we pin the parser to prevent is vanishing while parsing is in progress.
+        this.usePinned { _ ->
+            // Pin bytes to allow data to be available during parsing.
+            bytes.usePinned { bytesRef ->
+                val data = NSData.dataWithBytes(bytesRef.addressOf(0), bytes.size.convert())
+                this.parser = NSXMLParser(data = data)
+                this.parser.delegate = this
+                this.parser.parse()
+            }
+        }
+
+        this.parser.setDelegate(null)
+
+        println("Parsing Done")
     }
 
     override fun parserDidStartDocument(parser: NSXMLParser) {
-        println("native start doc")
         this.handler.startDocument()
     }
 
     override fun parserDidEndDocument(parser: NSXMLParser) {
-        println("native end doc")
         this.handler.endDocument()
     }
 
@@ -38,9 +43,7 @@ actual class Parser actual constructor(val handler: Base) : NSObject(), NSXMLPar
         qualifiedName: String?,
         attributes: Map<Any?, *>
     ) {
-        // TODO map attributes
-        println("native start element")
-        this.handler.startElement(namespaceURI, qualifiedName, mapOf())
+        this.handler.startElement(didStartElement, namespaceURI, qualifiedName, mapOf())
     }
 
     override fun parser(parser: NSXMLParser, parseErrorOccurred: NSError) {
