@@ -24,12 +24,12 @@ kotlin {
     // For Linux, should be changed to e.g. linuxX64
     // For MacOS, should be changed to e.g. macosX64
     // For Windows, should be changed to e.g. mingwX64
-    macosX64() {
+    macosX64 {
         binaries {
             framework {  }
         }
     }
-    mingwX64() {
+    mingwX64 {
         binaries {
             get("debugTest").apply {
                 linkerOpts("-L${mingwPath.resolve("lib")}")
@@ -81,9 +81,5 @@ kotlin {
                 implementation(npm("saxophone", "0.6.1"))
             }
         }
-        mingwX64().compilations["main"].defaultSourceSet {}
-        mingwX64().compilations["test"].defaultSourceSet {}
-        macosX64().compilations["main"].defaultSourceSet {}
-        macosX64().compilations["test"].defaultSourceSet {}
     }
 }
