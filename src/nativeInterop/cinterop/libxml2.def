@@ -1,0 +1,3 @@
+headers = libxml/parser.h
+##headerFilter = libxml/*
+linkerOpts.mingw = -lxml2
