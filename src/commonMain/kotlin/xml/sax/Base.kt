@@ -1,13 +1,15 @@
 package xml.sax
 
+import kotlinx.io.core.Input
+
 class Base {
 
     var handler: Base? = null
 
     private val parser: Parser = Parser(this)
 
-    fun parse(xml: String) {
-        this.parser.parse(xml)
+    fun parse(input: Input) {
+        this.parser.parse(input)
     }
 
     fun startDocument() {
